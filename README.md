@@ -30,7 +30,13 @@ google sdk
 `pip install flask python-dotenv`    
 `apt install google-cloud-cli -y`  # Linux  
 
-4.    
+4. Acesse a URL da aplicação (enviada no Canvas)  
+  
+### Rodando a aplicação locamente  
+  
+  `python3 app.py`  
+  
+
   
 
 

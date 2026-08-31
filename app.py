@@ -12,22 +12,22 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "chave_secreta_para_flash_messages")
 
 # --- CONFIGURAÇÕES DO GOOGLE CLOUD STORAGE ---
-GCP_BUCKET_NAME = os.getenv("bucket-upload-images")  # Nome do bucket
-GCP_PROJECT_ID = os.getenv("pucminas-507118")    # Opcional
+GCP_BUCKET_NAME = os.getenv("GCP_BUCKET_NAME")
 
-storage_client = None
-try:
-    storage_client = storage.Client(project=GCP_PROJECT_ID)
-except Exception as e:
-    print(f"Erro ao inicializar o cliente do Google Cloud Storage: {e}")
+def get_storage_client():
+    try:
+        return storage.Client()   # Cloud Run já injeta o projeto automaticamente
+    except Exception as e:
+        print(f"Erro ao inicializar o cliente do Google Cloud Storage: {e}")
+        return None
 
 # --- CONFIGURAÇÕES DE E-MAIL (SMTP) ---
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_REMETENTE = os.getenv("EMAIL_REMETENTE", "seu_email@gmail.com")
-EMAIL_SENHA = os.getenv("EMAIL_SENHA", "sua_senha_de_aplicativo")
+EMAIL_REMETENTE = os.getenv("EMAIL_REMETENTE")
+EMAIL_SENHA = os.getenv("EMAIL_SENHA")
 
-# --- TEMPLATE HTML ---
+# --- TEMPLATE HTML INTEGRADO ---
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -108,8 +108,13 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    storage_client = get_storage_client()
     if not storage_client:
         flash("Erro interno: Google Cloud Storage não foi inicializado.", "error")
+        return redirect(url_for('index'))
+
+    if not GCP_BUCKET_NAME:
+        flash("Erro interno: variável GCP_BUCKET_NAME não definida.", "error")
         return redirect(url_for('index'))
 
     nome = request.form.get('nome')
@@ -139,5 +144,6 @@ def upload_file():
 
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
