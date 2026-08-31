@@ -3,7 +3,7 @@
 o projeto tem o objetivo de subir uma aplicação que envia imagens para um repositório do tipo object storage, e envia e-mail confirmando a operação.  
 
 ## Provedor Utilizado  
-* Google CLoud Run  
+* GCP (Cloud Run)    
   
 ## Como rodar localmente  
   
@@ -27,7 +27,7 @@ google sdk
     
 3. Instale as dependências:  
   
-`pip install flask python-dotenv`    
+`pip install flask python-dotenv gunicorn`      
 `apt install google-cloud-cli -y`  # Linux  
 
 4. Acesse a URL da aplicação (enviada no Canvas)  
@@ -35,7 +35,7 @@ google sdk
 ### Rodando a aplicação locamente  
   
   `python3 app.py`  
-  
+
 
   
 
