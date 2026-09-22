@@ -68,7 +68,9 @@ jobs:
         uses: zaproxy/action-baseline@v0.10.0
         with:
           target: "https://pucminas-upload-114476064778.us-central1.run.app"
-          cmd_options: "-a -I"   # evita criação de Issues e remove o erro
+          cmd_options: "-a"
+          issue_title: ""   # DESATIVA criação de issues
+          token: ""         # GARANTE que nada será enviado ao GitHub
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
