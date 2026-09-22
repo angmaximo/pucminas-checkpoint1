@@ -72,7 +72,7 @@ jobs:
         uses: zaproxy/action-baseline@v0.10.0
         with:
           target: "https://pucminas-upload-114476064778.us-central1.run.app"   # substitua aqui
-          cmd_options: "-a"
+          cmd_options: "-a -I"
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
