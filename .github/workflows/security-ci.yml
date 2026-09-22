@@ -140,8 +140,7 @@ jobs:
         with:
           target: "https://pucminas-upload-114476064778.us-central1.run.app"
           cmd_options: "-a"
-          github_token: ""
-          issue_title: ""
+          allow_issue_writing: false
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
