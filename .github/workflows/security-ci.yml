@@ -136,14 +136,16 @@ jobs:
 
     steps:
       - name: Run OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.10.0
+        uses: zaproxy/action-baseline@v0.14.0
         with:
           target: "https://pucminas-upload-114476064778.us-central1.run.app"
           cmd_options: "-a"
           allow_issue_writing: false
+          artifact_name: "zap-report-internal"
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: zap-report
           path: zap_report.html
