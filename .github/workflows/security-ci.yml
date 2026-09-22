@@ -70,7 +70,7 @@ jobs:
     steps:
       - name: Smoke Test - Health Check
         run: |
-          curl -I https://SEU_ENDPOINT_DO_CLOUD_RUN | tee smoke-log.txt
+          curl -I https://pucminas-upload-114476064778.us-central1.run.app | tee smoke-log.txt
 
       - name: Upload Smoke Logs
         uses: actions/upload-artifact@v4
@@ -134,17 +134,17 @@ jobs:
     name: DAST - OWASP ZAP Baseline
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Run OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.10.0
-        with:
-          target: "https://pucminas-upload-114476064778.us-central1.run.app"
-          cmd_options: "-a"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: ""
+  steps:
+    - name: Run OWASP ZAP Baseline Scan
+      uses: zaproxy/action-baseline@v0.10.0
+      with:
+        target: "https://pucminas-upload-114476064778.us-central1.run.app"
+        cmd_options: "-a"
+        github_token: ""     # DESATIVA criação de Issues
+        issue_title: ""      # garante que nada será criado
 
-      - name: Upload ZAP Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-report
-          path: zap_report.html
+    - name: Upload ZAP Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: zap-report
+        path: zap_report.html
